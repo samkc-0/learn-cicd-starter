@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"time"
+	"strconv"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/cors"
@@ -95,10 +96,16 @@ func main() {
 		ReadHeaderTimeout: 30 * time.Second,
 	}
 
-	if port < 1 || port > 65536 {
+	pport, err := strconv.Atoi(port)
+
+	if err != nil {
+		log.Fatal("failed to parse port no")
+	}
+
+	if pport < 1 || pport > 65536 {
 		log.Fatal("invalid port")
 	}
 
-	log.Printf("Serving on port: %d\n", port)
+	log.Printf("Serving on port: %d\n", pport)
 	log.Fatal(srv.ListenAndServe())
 }
